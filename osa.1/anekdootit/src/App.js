@@ -28,7 +28,6 @@ const App = () => {
     const kopio = [...taulukko]
     kopio[selected] += 1
     setTaulukko(kopio)
-    console.log(kopio)
   }
 
 
