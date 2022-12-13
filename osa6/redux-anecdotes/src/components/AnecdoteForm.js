@@ -1,36 +1,35 @@
-import { useDispatch } from "react-redux";
 import { createNewAnecdote } from "../reducers/anecdoteReducer";
-import { setNotification, nullNotification } from '../reducers/notificationReducer'
+import { setThunkNotification } from '../reducers/notificationReducer'
+import { connect } from "react-redux";
 
 
-const AnecdoteForm = () => {
-    const dispatch = useDispatch()
+const AnecdoteForm = (props) => {
 
     const addAnecdote = async (event) => {
         event.preventDefault()
         const anecdote = event.target.anecdote.value
         event.target.anecdote.value = ''
+        props.createNewAnecdote(anecdote)
 
-
-        dispatch(createNewAnecdote(anecdote))
-
-        dispatch(setNotification(`anecdote with content '${anecdote}' was created`))
-        setTimeout(() => {
-            dispatch(nullNotification())
-        }, 5000)
+        props.setThunkNotification(`you created '${anecdote}'`, 5)
     }
 
     return (
         <div>
             <h2>create new</h2>
             <form onSubmit={addAnecdote}>
-                <div>
-                    <input name="anecdote" />
-                </div>
-                <button type="submit">add</button>
+                <div><input name="anecdote" /></div>
+                <button type="submit">create</button>
             </form>
         </div>
     )
 }
 
-export default AnecdoteForm
+const mapDispatchToProps = {
+    createNewAnecdote,
+    setThunkNotification
+}
+
+const ConnectedAnecdoteForm = connect(null, mapDispatchToProps)(AnecdoteForm)
+
+export default ConnectedAnecdoteForm
