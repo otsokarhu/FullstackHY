@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Routes, Route, Link, useParams, useNavigate
 } from "react-router-dom"
+import { useField } from './hooks'
 
 
 
@@ -64,22 +65,29 @@ const Footer = () => (
 
 
 const CreateNew = (props) => {
+  const { 'reset': resetContent, ...content } = useField()
+  const { 'reset': resetAuthor, ...author } = useField()
+  const { 'reset': resetInfo, ...info } = useField()
   const navigate = useNavigate()
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
     navigate('/')
+  }
 
+  const handleReset = (event) => {
+    event.preventDefault()
+    resetContent()
+    resetAuthor()
+    resetInfo()
   }
 
   return (
@@ -88,17 +96,18 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input {...info} />
         </div>
         <button>create</button>
+        <button onClick={event => handleReset(event)}>reset fields </button>
       </form>
     </div>
   )
@@ -140,6 +149,7 @@ const App = () => {
   const anecdoteById = (id) =>
     anecdotes.find(a => a.id === id)
 
+  // eslint-disable-next-line no-unused-vars
   const vote = (id) => {
     const anecdote = anecdoteById(id)
 
