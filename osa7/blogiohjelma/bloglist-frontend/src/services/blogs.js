@@ -12,6 +12,11 @@ const getAll = async () => {
   return response.data
 }
 
+const getOne = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}`)
+  return response.data
+}
+
 const create = async (newObject) => {
   const config = {
     headers: { Authorization: token },
@@ -39,6 +44,7 @@ const exportService = {
   create,
   update,
   remove,
+  getOne
 }
 
 export default exportService

@@ -4,12 +4,13 @@ import loginService from './services/login'
 import userService from './services/users'
 import {
   BrowserRouter as Router,
-  Routes, Route, Link, useMatch
+  Routes, Route, Link
 } from "react-router-dom"
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Users from './components/Users'
 import User from './components/User'
+import SingleBlog from './components/SingleBlog'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -150,21 +151,26 @@ const App = () => {
         <LoginForm
           error={error}
           handleLogIn={handleLogIn} /> :
-        <Routes>
-          <Route path="/" element={<BlogForm
-            notification={notification}
-            error={error}
-            handleLogOut={handleLogOut}
-            addBlog={addBlog}
-            blogs={blogs}
-            handleLike={handleLike}
-            handleRemove={handleRemove}
-            user={user}
-            users={users} />} />
-          <Route path="/users" element={<Users users={users} />} />
-          <Route path="/users/:id" element={<User />} />
+        <><div>
+          <Link style={padding} to="/">blogs</Link>
+          <Link style={padding} to="/users">users</Link>
+          {user.name} logged in <button onClick={handleLogOut}>logout</button>
+        </div><Routes>
+            <Route path="/" element={<BlogForm
+              notification={notification}
+              error={error}
+              handleLogOut={handleLogOut}
+              addBlog={addBlog}
+              blogs={blogs}
+              handleLike={handleLike}
+              handleRemove={handleRemove}
+              user={user}
+              users={users} />} />
+            <Route path="/users" element={<Users users={users} />} />
+            <Route path="/users/:id" element={<User />} />
+            <Route path="/blogs/:id" element={<SingleBlog />} />
 
-        </Routes>
+          </Routes></>
 
       }</div>
     </Router>
