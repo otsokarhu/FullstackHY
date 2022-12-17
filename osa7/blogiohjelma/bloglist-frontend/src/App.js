@@ -11,6 +11,7 @@ import BlogForm from './components/BlogForm'
 import Users from './components/Users'
 import User from './components/User'
 import SingleBlog from './components/SingleBlog'
+import { Button, Navbar, Nav } from 'react-bootstrap'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -140,39 +141,51 @@ const App = () => {
   }
 
 
-
-
-
-
-
   return (
     <Router>
-      <div>{user === null ?
-        <LoginForm
-          error={error}
-          handleLogIn={handleLogIn} /> :
-        <><div>
-          <Link style={padding} to="/">blogs</Link>
-          <Link style={padding} to="/users">users</Link>
-          {user.name} logged in <button onClick={handleLogOut}>logout</button>
-        </div><Routes>
-            <Route path="/" element={<BlogForm
-              notification={notification}
-              error={error}
-              handleLogOut={handleLogOut}
-              addBlog={addBlog}
-              blogs={blogs}
-              handleLike={handleLike}
-              handleRemove={handleRemove}
-              user={user}
-              users={users} />} />
-            <Route path="/users" element={<Users users={users} />} />
-            <Route path="/users/:id" element={<User />} />
-            <Route path="/blogs/:id" element={<SingleBlog />} />
+      <div className='container'>
+        <div>{user === null ?
+          <LoginForm
+            error={error}
+            handleLogIn={handleLogIn} /> :
+          <><div>
+            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+              <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="mr-auto">
+                  <Nav.Link href="#" as="span">
+                    <Link style={padding} to="/">blogs</Link>
+                  </Nav.Link>
+                  <Nav.Link href="#" as="span">
+                    <Link style={padding} to="/users">users</Link>
+                  </Nav.Link>
+                  {user.name} logged in
 
-          </Routes></>
+                  <Button variant="dark" onClick={handleLogOut}>logout
+                  </Button>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
 
-      }</div>
+          </div><Routes>
+              <Route path="/" element={<BlogForm
+                notification={notification}
+                error={error}
+                handleLogOut={handleLogOut}
+                addBlog={addBlog}
+                blogs={blogs}
+                handleLike={handleLike}
+                handleRemove={handleRemove}
+                user={user}
+                users={users} />} />
+              <Route path="/users" element={<Users users={users} />} />
+              <Route path="/users/:id" element={<User />} />
+              <Route path="/blogs/:id" element={<SingleBlog />} />
+
+            </Routes></>
+
+        }</div>
+      </div>
     </Router>
   )
 }

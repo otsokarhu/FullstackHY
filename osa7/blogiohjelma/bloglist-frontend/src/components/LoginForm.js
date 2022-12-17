@@ -1,5 +1,6 @@
 import Error from "./Error"
 import { useState } from "react"
+import { Form, Button } from 'react-bootstrap'
 
 
 const LoginForm = ({ error, handleLogIn }) => {
@@ -11,31 +12,31 @@ const LoginForm = ({ error, handleLogIn }) => {
     <div>
       <h2>Log in to application</h2>
       <Error message={error} />
-      <form onSubmit={(event) => handleLogIn(event, username, password)}>
-        <div>
-          username
-          <input
+      <Form onSubmit={(event) => handleLogIn(event, username, password)}>
+        <Form.Group>
+          <Form.Label>username:</Form.Label>
+
+          <Form.Control
             id="username-input"
             type="text"
             value={username}
             name="Username"
             onChange={({ target }) => setUsername(target.value)}
           />
-        </div>
-        <div>
-          password
-          <input
+
+          <Form.Label>password:</Form.Label>
+          <Form.Control
             id="password-input"
             type="password"
             value={password}
             name="Password"
             onChange={({ target }) => setPassword(target.value)}
           />
-        </div>
-        <button type="submit" id="loginbutton">
-          login
-        </button>
-      </form>
+          <Button variant="primary" type="submit" id="loginbutton">
+            login
+          </Button>
+        </Form.Group>
+      </Form>
     </div>
   )
 }

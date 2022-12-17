@@ -5,6 +5,7 @@ import Togglable from './Togglable'
 import Blog from './Blog'
 import Users from './Users'
 
+
 const BlogForm = ({
   notification,
   error,
@@ -25,6 +26,7 @@ const BlogForm = ({
     </div>
     <div>
       {blogs.map((blog) => (
+
         <Blog
           key={blog.id}
           blog={blog}
