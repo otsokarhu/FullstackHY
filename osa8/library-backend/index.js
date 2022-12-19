@@ -113,7 +113,7 @@ const typeDefs = gql`
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book]!
-    allAuthors: [Author]!
+    allAuthors: [Author!]!
   }
 
   type Mutation {
@@ -121,7 +121,7 @@ const typeDefs = gql`
       title: String!
       author: String!
       published: Int!
-      genres: [String]!
+      genres: [String!]!
       
     ): Book
     editAuthor(
@@ -155,11 +155,9 @@ const resolvers = {
       const authorsBooks = authors.map((author) =>
         books.filter((book) => book.author === author.name)
       )
-      return authorsBooks.map((book) => ({
-        name: book[0].author,
-        born: book[0].born,
-        bookCount: book.length
-      })
+      return authors.map((author, index) => {
+        return { ...author, bookCount: authorsBooks[index].length }
+      }
       )
     },
   },
@@ -170,7 +168,8 @@ const resolvers = {
         authors = authors.concat(author)
       }
       const book = { ...args, id: uuid() }
-      books = books.concat(book)
+      console.log(book);
+      books = books.concat(book);
       return book
     },
     editAuthor: (root, args) => {
