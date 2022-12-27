@@ -26,12 +26,6 @@ const NewBook = ({ show }) => {
     event.preventDefault()
 
     const publishedInt = parseInt(published)
-    console.log('add book...')
-    console.log('title:', title)
-    console.log('author:', author)
-    console.log('published:', publishedInt)
-    console.log('genres:', genres)
-
 
     addBook({
       variables: { title, author, published: publishedInt, genres }
