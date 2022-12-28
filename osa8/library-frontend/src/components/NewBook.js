@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useMutation } from '@apollo/client'
-import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../query'
+import { useMutation, useSubscription } from '@apollo/client'
+import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS, BOOK_ADDED } from '../query'
 
 const NewBook = ({ show, setPage }) => {
   const [title, setTitle] = useState('')
@@ -15,6 +15,12 @@ const NewBook = ({ show, setPage }) => {
       if (error.graphQLErrors[0]) {
         console.log(error.graphQLErrors[0].message)
       }
+    }
+  })
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      window.alert(`New book added: ${data.data.bookAdded.title}`)
     }
   })
 
