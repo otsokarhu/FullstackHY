@@ -5,7 +5,7 @@ interface BmiValues {
 
 type Result = string
 
-const parseArguments = (args: Array<string>): BmiValues => {
+const parseValues = (args: Array<string>): BmiValues => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.length > 4) throw new Error('Too many arguments');
 
@@ -19,7 +19,7 @@ const parseArguments = (args: Array<string>): BmiValues => {
   }
 }
 
-const calculateBmi = (height: number, weight: number): Result => {
+export const calculateBmi = (height: number, weight: number): Result => {
   if (height === 0 || weight === 0) throw new Error('height or weight cannot be 0')
   if (height < 0 || weight < 0) throw new Error('height or weight cannot be negative')
   const bmi = weight / Math.pow(height / 100, 2)
@@ -36,7 +36,7 @@ const calculateBmi = (height: number, weight: number): Result => {
 }
 
 try {
-  const { height, weight } = parseArguments(process.argv)
+  const { height, weight } = parseValues(process.argv)
   console.log(calculateBmi(height, weight));
 } catch (e: unknown) {
   let errorMessage = 'Something bad happened'
