@@ -7,7 +7,7 @@ app.get('/hello', (_req, res) => {
   res.send('Hello Full Stack!');
 });
 
-app.get('/')
+app.get('/');
 
 app.get('/bmi', (req, res) => {
   const height = Number(req.query.height);
@@ -29,7 +29,8 @@ app.post('/exercises', (req, res) => {
     res.status(400).send({ error: 'parameters missing' });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   if (isNaN(target) || !hours.every((h: number) => !isNaN(h))) {
     res.status(400).send({ error: 'malformatted parameters' });
   }

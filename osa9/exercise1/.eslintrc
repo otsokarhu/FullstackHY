@@ -29,6 +29,7 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "/home/webotso/Fullstack/osa9/exercise1"
   }
 }
