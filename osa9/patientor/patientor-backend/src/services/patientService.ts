@@ -1,20 +1,30 @@
-import patientData from '../data/patients.json';
+import patientDataNS from '../data/patients';
+import patientData from '../data/patients';
 import { v1 as uuid } from 'uuid';
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const new_id = uuid();
 
 import { NonSensitivePatient, Patient, NewPatient } from '../types';
 
-const patients: Array<NonSensitivePatient> = patientData;
+const nsPatients: Array<NonSensitivePatient> = patientDataNS;
+
+const patients: Array<Patient> = patientData;
 
 const getNSPatient = (): Array<NonSensitivePatient> => {
-  return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+  return nsPatients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id,
     name,
     dateOfBirth,
     gender,
     occupation
   }));
+};
+
+
+
+const findById = (id: string): Patient | undefined => {
+  const patient = patients.find(p => p.id === id);
+  return patient;
 };
 
 const addPatient = (patient: NewPatient): Patient => {
@@ -30,5 +40,6 @@ const addPatient = (patient: NewPatient): Patient => {
 
 export default {
   getNSPatient,
-  addPatient
+  addPatient,
+  findById
 };
