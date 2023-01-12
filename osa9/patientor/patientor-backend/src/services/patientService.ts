@@ -4,7 +4,7 @@ import { v1 as uuid } from 'uuid';
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const new_id = uuid();
 
-import { NonSensitivePatient, Patient, NewPatient } from '../types';
+import { NonSensitivePatient, Patient, NewPatient, NewEntry, Entry } from '../types';
 
 const nsPatients: Array<NonSensitivePatient> = patientDataNS;
 
@@ -38,8 +38,19 @@ const addPatient = (patient: NewPatient): Patient => {
   return newPatient;
 };
 
+const addEntry = (patient: Patient, entry: NewEntry): Entry => {
+  const newEntry = {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    id: new_id,
+    ...entry
+  };
+  patient.entries.push(newEntry);
+  return newEntry;
+};
+
 export default {
   getNSPatient,
   addPatient,
-  findById
+  findById,
+  addEntry
 };

@@ -8,13 +8,42 @@ import { apiBaseUrl } from "../constants";
 import { useParams } from "react-router-dom";
 import { setPatient, useStateValue, setDiagnosisList } from "../state";
 import EntryDetails from "./DiagnosisEntry";
-import { Container } from "@material-ui/core";
+import { Container, Button } from "@material-ui/core";
 import { NoEntries } from "./styles";
 import { green } from "@material-ui/core/colors";
+import AddEntryModal from "../AddEntryModal";
+import { EntryFormValues } from "../AddEntryModal/AddEntryForm";
 
 const SinglePatientPage = () => {
   const [{ patient, diagnoses }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string>();
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  const addNewEntry = async (values: EntryFormValues) => {
+    try {
+      const { data: updatedPatient } = await axios.post<Patient>(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        values
+      );
+
+      if (id) {
+        dispatch(setPatient(updatedPatient));
+      }
+
+      closeModal();
+    } catch (e) {
+      console.error(e.response.data);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      setError(e.response.data.error);
+    }
+  };
 
   React.useEffect(() => {
 
@@ -79,6 +108,17 @@ const SinglePatientPage = () => {
             {patient?.entries.map(entry => <div key={entry.id}> <EntryDetails entry={entry} diagnoses={diagnoses} /> </div>)}
           </h3>
         </div>
+        <div>
+          <AddEntryModal
+            modalOpen={modalOpen}
+            onSubmit={addNewEntry}
+            error={error}
+            onClose={closeModal}
+          />
+          <Button variant="contained" color="primary" onClick={() => openModal()}>
+            Add new entry
+          </Button>
+        </div>
       </div>
     );
   }
@@ -100,6 +140,17 @@ const SinglePatientPage = () => {
             </div>
           </Container>
         </h3>
+      </div>
+      <div>
+        <AddEntryModal
+          modalOpen={modalOpen}
+          onSubmit={addNewEntry}
+          error={error}
+          onClose={closeModal}
+        />
+        <Button variant="contained" color="primary" onClick={() => openModal()}>
+          Add new entry
+        </Button>
       </div>
     </div>
   );
